@@ -117,7 +117,7 @@ class Auth
             time() + 365 * 86400,
             '/',
             '.baiti.net',
-            true,   // secure
+            false,  // secure (off for dev)
             true,   // httpOnly
             false,  // raw
             'lax'
