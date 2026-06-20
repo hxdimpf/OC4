@@ -116,7 +116,7 @@ class Auth
             $cookieData,
             time() + 365 * 86400,
             '/',
-            null,
+            '.baiti.net',
             true,   // secure
             true,   // httpOnly
             false,  // raw
