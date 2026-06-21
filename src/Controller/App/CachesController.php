@@ -138,7 +138,7 @@ class CachesController extends AbstractController
         $now = new \DateTimeImmutable();
 
         // Edit mode: load existing cache data if ?edit={wpID} is present
-        $editWp = $request->query->get('edit', '');
+        $editWp = $request->query->get('edit', ''); if (empty($editWp)) { $editWp = $request->request->get('edit', ''); }
         $editCache = null;
         $editDesc = null;
         $editAttribs = [];
@@ -391,6 +391,11 @@ class CachesController extends AbstractController
                 $wayLength  = $form['way_length']  !== '' ? (float)$form['way_length']  : 0.0;
 
                 if ($isEdit) {
+                    // Resolve WP code from edit_id if not in form (POST loses query params)
+                    if (empty($editWp) && !empty($editId)) {
+                        $editCache = $this->cachesRepository->fetchCacheById($editId);
+                        if ($editCache) $editWp = $editCache["wp_oc"] ?? "";
+                    }
                     // Verify ownership
                     $existing = $this->cachesRepository->fetchCacheByWpForEdit($editWp);
                     if (!$existing || (int)$existing['user_id'] !== $user["user_id"]) {
@@ -541,6 +546,7 @@ class CachesController extends AbstractController
             'errors'  => $errors,
             'is_edit' => $editCache !== null,
             'edit_cache_id' => $editCache ? (int)$editCache['cache_id'] : 0,
+            'edit_wp' => $editWp,
         ]);
     }
 

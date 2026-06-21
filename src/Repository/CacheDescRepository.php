@@ -52,12 +52,26 @@ class CacheDescRepository
     public function insertDescription(int $cacheId, array $data): void
     {
         $data['cache_id'] = $cacheId;
-        $this->connection->insert(self::TABLE, $data);
+        $cols = array_map(fn($c) => "`$c`", array_keys($data));
+        $placeholders = array_map(fn($c) => ":$c", array_keys($data));
+        $params = [];
+        foreach ($data as $k => $v) $params[$k] = $v;
+        $this->connection->executeStatement(
+            sprintf("INSERT INTO %s (%s) VALUES (%s)", self::TABLE, implode(", ", $cols), implode(", ", $placeholders)),
+            $params
+        );
     }
 
     /** @throws Exception */
     public function updateDescription(int $cacheId, array $data): void
     {
-        $this->connection->update(self::TABLE, $data, ['cache_id' => $cacheId]);
+        $sets = array_map(fn($c) => "`$c` = :$c", array_keys($data));
+        $params = [];
+        foreach ($data as $k => $v) $params[$k] = $v;
+        $params["cacheId"] = $cacheId;
+        $this->connection->executeStatement(
+            sprintf("UPDATE %s SET %s WHERE `cache_id` = :cacheId", self::TABLE, implode(", ", $sets)),
+            $params
+        );
     }
 }

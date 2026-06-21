@@ -153,7 +153,9 @@ class Auth
             return;
         }
 
-        $cookie = $request->cookies->get('ocdevelopmentdata');
+
+
+$rawCookie = $_COOKIE["ocdevelopmentdata"] ?? null;        $cookie = $request->cookies->get("ocdevelopmentdata");        if ($rawCookie && !$cookie) { error_log("AUTH: raw cookie present but Symfony cant read it: " . substr($rawCookie,0,30)); }        if ($rawCookie) { $cookie = $rawCookie; }
         if (!$cookie) {
             return;
         }

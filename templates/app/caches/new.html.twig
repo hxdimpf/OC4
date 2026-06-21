@@ -69,7 +69,8 @@
     {% endif %}
 
     <form method="post" action="{{ path('app_cache_new') }}">
-        {% if is_edit %}<input type="hidden" name="edit_id" value="{{ edit_cache_id }}">{% endif %}
+        {% if is_edit %}<input type="hidden" name="edit_id" value="{{ edit_cache_id }}">
+        <input type="hidden" name="edit" value="{{ edit_wp }}">{% endif %}
 
         {# ── Basic Info ── #}
         <div class="oc-form-section">
