@@ -330,6 +330,7 @@ class UniCacheBuilder
             'additionalWaypoints' => array_map(fn($w) => [
                 'location'    => sprintf('%s|%s', $w['latitude'], $w['longitude']),
                 'type'        => $w['type_name'] ?? 'Waypoint',
+                'typeId'      => (int)($w['type_id'] ?? 0),
                 'type_name'   => $w['type_name'] ?? 'Waypoint',
                 'name'        => $w['type_name'] ?? 'Waypoint',
                 'description' => $w['description'] ?? '',
