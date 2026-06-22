@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Simple auth service — replaces Symfony Security.
  *
- * Reads the legacy ocdevelopmentdata cookie, validates against sys_sessions,
+ * Reads the legacy oc4_session cookie, validates against sys_sessions,
  * loads the user array. No ORM, no entities, no firewall.
  */
 class Auth
@@ -112,11 +112,11 @@ class Auth
         ]));
 
         $this->loginCookie = new \Symfony\Component\HttpFoundation\Cookie(
-            'ocdevelopmentdata',
+            'oc4_session',
             $cookieData,
             time() + 365 * 86400,
             '/',
-            '.baiti.net',
+            null,
             false,  // secure (off for dev)
             true,   // httpOnly
             false,  // raw
@@ -155,7 +155,7 @@ class Auth
 
 
 
-$rawCookie = $_COOKIE["ocdevelopmentdata"] ?? null;        $cookie = $request->cookies->get("ocdevelopmentdata");        if ($rawCookie && !$cookie) { error_log("AUTH: raw cookie present but Symfony cant read it: " . substr($rawCookie,0,30)); }        if ($rawCookie) { $cookie = $rawCookie; }
+$rawCookie = $_COOKIE["oc4_session"] ?? null;        $cookie = $request->cookies->get("oc4_session");        if ($rawCookie && !$cookie) { error_log("AUTH: raw cookie present but Symfony cant read it: " . substr($rawCookie,0,30)); }        if ($rawCookie) { $cookie = $rawCookie; }
         if (!$cookie) {
             return;
         }
