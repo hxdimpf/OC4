@@ -96,7 +96,7 @@ class WaypointsRepository
     public function fetchUserNote(int $cacheId, int $userId): ?array
     {
         $result = $this->connection->createQueryBuilder()
-            ->select('description', 'latitude', 'longitude', 'logpw')
+            ->select('id', 'description', 'latitude', 'longitude', 'logpw')
             ->from(self::TABLE)
             ->where('cache_id = :cacheId')
             ->andWhere('user_id = :userId')
